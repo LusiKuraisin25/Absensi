@@ -12,7 +12,9 @@ class KaryawanController extends Controller
      */
     public function index()
     {
-        //
+        return view('karyawan', [
+            'karyawan' => Karyawan::all()
+        ]);
     }
 
     /**
@@ -20,7 +22,9 @@ class KaryawanController extends Controller
      */
     public function create()
     {
-        //
+        return view('add-karyawan', [
+            'title' => 'Tambah Karyawan'
+        ]);
     }
 
     /**
@@ -28,7 +32,19 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama_karyawan' => 'required',
+            'NIP' => 'required|unique:karyawans',
+            'TTL' => 'required',
+            'jenis_kelamin' => 'required',
+            'alamat' => 'required',
+            'jabatan' => 'required',
+            'no_telepon' => 'required',
+        ]);
+
+        Karyawan::create($validated);
+
+        return redirect('karyawan')->with('add_karyawan', 'Data berhasil ditambahkan');
     }
 
     /**

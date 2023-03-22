@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,27 +16,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-
-Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/karyawan', function () {
-    return view('karyawan');
-})->name("karyawan");
-
-Route::get('/absensi', function () {
-    return view('absensi');
-})->name("absensi");
-
-Route::get('/laporan', function () {
-    return view('laporan');
-})->name("laporan");
-
 Route::middleware('auth')->group(function () {
+
+    Route::resource('karyawan', KaryawanController::class);
+
+    Route::get('/absensi', function () {
+        return view('absensi');
+    })->name("absensi");
+
+    Route::get('/laporan', function () {
+        return view('laporan');
+    })->name("laporan");
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
